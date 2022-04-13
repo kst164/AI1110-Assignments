@@ -29,11 +29,14 @@ We know the formula for interest on a recurring deposit is:
 \begin{align}
     I &= \frac{Prn(n+1)}{12 \cdot 2 \cdot 100} \\
     \implies 5550 &= \frac{1000 \cdot 10n(n+1)}{12 \cdot 2 \cdot 100} \\
-    \implies n(n+1) &= 1332 \\
-                    &= 36 \cdot 37
+    n(n+1) &= 1332 \\
+    n^2 + n - 1332 &= 0 \\
+    n^2 + 37n - 36n - 1332 &= 0 \\
+    n(n + 37) - 36(n + 37) &= 0 \\
+    (n - 36)(n + 37) &= 0
 \end{align}
-Solving the quadratic, we get $n=36$ or $n=-37$. Discarding the negative solution, we get that the
-time of maturity is 36 months, or 3 years. \\ \\
+So the solutions are $n=36$ or $n=-37$. Discarding the negative solution, we get that the time of
+maturity is 36 months, or 3 years. \\ \\
 We can verify this answer by graphing the interest as a function of time, i.e.,
 \begin{equation}
     y = \frac{1000 \cdot 10x(x+1)}{12 \cdot 2 \cdot 100}
