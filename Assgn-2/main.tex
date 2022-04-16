@@ -1,0 +1,77 @@
+\documentclass[journal, 12pt, twocolumn]{IEEEtran}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tfrupee}
+
+\title{Assignment 2 - ICSE 12 2018 - Q4}
+\author{Kartheek Tammana}
+
+\begin{document}
+
+\newcommand{\mydet}[1]{\ensuremath{\begin{vmatrix}#1\end{vmatrix}}}
+
+\maketitle
+
+\textbf{Question:}
+
+Use properties of determinant to solve for $x$:
+
+\begin{center}
+    $\mydet{ x + a & b & c \\ c & x + b & a \\ a & b & x + c } = 0$ and $x \neq 0$
+\end{center}
+
+\textbf{Solution:}
+\begin{equation}
+    \mydet{
+        x + a & b & c \\
+        c & x + b & a \\
+        a & b & x + c
+    } = 0
+\end{equation}
+    Transforming $C_1 \rightarrow C_1 + C_2 + C_3$,
+\begin{align}
+    \mydet{
+        x + a + b + c & b & c \\
+        x + a + b + c & x + b & a \\
+        x + a + b + c & b & x + c
+    } &= 0 \\
+    \implies (x + a + b + c)
+    \mydet{
+        1 & b & c \\
+        1 & x + b & a \\
+        1 & b & x + c
+    } &= 0
+\end{align}
+    Transforming $R_3 \rightarrow R_3 - R_1$,
+\begin{equation}
+    (x + a + b + c)
+    \mydet{
+        1 & b & c \\
+        1 & x + b & a \\
+        0 & 0 & x
+    } = 0
+\end{equation}
+    Transforming $R_2 \rightarrow R_2 - R_1$,
+\begin{equation}
+    (x + a + b + c)
+    \mydet{
+        1 & b & c \\
+        0 & x & a - c \\
+        0 & 0 & x
+    } = 0
+\end{equation}
+Expanding the determinant, we get
+\begin{equation}
+    (x + a + b + c)x^2 = 0
+\end{equation}
+Since $x \neq 0$, we have
+\begin{equation}
+    x + a + b + c = 0
+\end{equation}
+And so we have our answer,
+\begin{equation}
+    x = -(a + b + c)
+\end{equation}
+
+\end{document}
