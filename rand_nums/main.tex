@@ -179,7 +179,6 @@ python3 cdf_gau.py
         \\
         Properties of the CDF:
         \begin{itemize}
-            \item $F_X(x) = \frac{1}{2 \pi} \int_{-\infty}^{x}{\exp\left(-\frac{u^2}{2}\right)du}$
             \item $\lim\limits_{x \to -\infty} F_X(x) = 0$
             \item $\lim\limits_{x \to \infty} F_X(x) = 1$
             \item $F_X(0) = \frac{1}{2}$
@@ -255,13 +254,17 @@ Variance: 0.999490
             \text{var}(X) &= E\left[X - E[X]\right]^2 \\
             &= E\left[X^2\right] \\
             &= \int_{-\infty}^{\infty}{x^2 p_X(x) dx} \\
-            &= \int_{-\infty}^{\infty}{\frac{x^2}{\sqrt{2 \pi}} \exp\left(-\frac{x^2}{2}\right) dx} \\
-            &= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty}{x \cdot x \exp\left(-\frac{x^2}{2}\right) dx}
+            &= \int_{-\infty}^{\infty}{\frac{x^2}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}} dx} \\
+            &= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty}{x \cdot x e^{-\frac{x^2}{2}} dx}
         \end{align}
 
         Integrating by parts, we get
         \begin{align}
-            \text{var}(X) &= \frac{1}{\sqrt{2 \pi}}\left(-x \text{exp}\left(\frac{-x^2}{2}\right) + \int{\text{exp}\left(\frac{-x^2}{2}\right) dx}\right) \Bigg|_{-\infty}^{\infty} \\
+            \begin{split}
+            \text{var}(X) &= \frac{1}{\sqrt{2 \pi}}\Bigg(-x \text{exp}\left(\frac{-x^2}{2}\right) \\
+            &+ \int{\text{exp}\left(\frac{-x^2}{2}\right) dx}\Bigg) \Bigg|_{-\infty}^{\infty}
+            \end{split}
+            \\
             &= \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\infty}{\text{exp}\left(\frac{-x^2}{2}\right) dx} \\
         \end{align}
         Substituting the Gaussian integral,
@@ -314,9 +317,9 @@ python3 cdf_v.py
         \begin{align}
             F_V(x) &= F_U \left(1 - \exp \left(\frac{-x}{2}\right)\right) \\
             &= \begin{cases}
-                0 & 1 - \exp \left(\frac{-x}{2}\right) < 0 \\
-                1 - \exp \left(\frac{-x}{2}\right) & 0 < 1 - \exp \left(\frac{-x}{2}\right) < 1 \\
-                1 & 1 - \exp \left(\frac{-x}{2}\right) > 1
+                0 & 1 - e^{\frac{-x}{2}} < 0 \\
+                1 - e^{\frac{-x}{2}} & 0 < 1 - e^{\frac{-x}{2}} < 1 \\
+                1 & 1 - e^{\frac{-x}{2}} > 1
             \end{cases}
         \end{align}
         Simplifying, we get

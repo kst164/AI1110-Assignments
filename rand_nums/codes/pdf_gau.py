@@ -25,5 +25,6 @@ for i in range(NUM_INTERVALS - 1):
 plt.plot(buckets[:-1], slopes, 'o', label='Experimental')
 plt.plot(buckets, theoretical, '-', label='Theoretical')
 plt.legend()
+plt.grid()
 plt.savefig('../figs/pdf_gau.png')
 plt.show()
