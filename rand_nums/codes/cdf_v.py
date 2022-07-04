@@ -12,6 +12,10 @@ freqs = []
 for i in range(NUM_INTERVALS):
     freqs.append(np.sum(v_arr < buckets[i]) / len(v_arr))
 
-plt.plot(buckets, freqs)
+theoretical = np.where(buckets < 0, 0, 1 - np.exp(-buckets/2))
+
+plt.plot(buckets, freqs, 'o', label='Experimental')
+plt.plot(buckets, theoretical, '-', label='Theoretical')
+plt.legend()
 plt.savefig('../figs/cdf_v.png')
 plt.show()
