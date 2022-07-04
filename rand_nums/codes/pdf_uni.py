@@ -8,7 +8,16 @@ arr = np.loadtxt("uni.dat", dtype="double")
 buckets = np.linspace(-2, 3, num=NUM_INTERVALS)
 freqs = []
 
-theoretical = np.where(np.logical_and(buckets > 0, buckets < 1), 1, 0)
+def pdf(x):
+    if x > 0 and x < 1:
+        return 1
+    else:
+        return 0
+
+vf = np.vectorize(pdf)
+
+# theoretical = np.where(np.logical_and(buckets > 0, buckets < 1), 1, 0)
+theoretical = vf(buckets)
 
 for i in range(NUM_INTERVALS):
     freqs.append(np.sum(arr < buckets[i]) / len(arr))

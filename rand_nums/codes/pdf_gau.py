@@ -8,7 +8,11 @@ arr = np.loadtxt("gau.dat", dtype="double")
 buckets = np.linspace(-6, 6, num=NUM_INTERVALS)
 freqs = []
 
-theoretical = np.exp(-buckets * buckets / 2) / np.sqrt(2 * np.pi)
+def pdf(x):
+    return np.exp(-x**2 / 2) / np.sqrt(2 * np.pi)
+vf = np.vectorize(pdf)
+# theoretical = np.exp(-buckets * buckets / 2) / np.sqrt(2 * np.pi)
+theoretical = vf(buckets)
 
 for i in range(NUM_INTERVALS):
     freqs.append(np.sum(arr < buckets[i]) / len(arr))
