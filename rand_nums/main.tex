@@ -296,7 +296,7 @@ python3 cdf_v.py
         It will generate the plot in Figure \eqref{fig:cdf_v}.
         \begin{figure}[!ht]
             \includegraphics[width=\columnwidth]{figs/cdf_v.png}
-            \caption{}
+            \caption{CDF of $V$}
             \label{fig:cdf_v}
         \end{figure}
 
@@ -329,6 +329,146 @@ python3 cdf_v.py
                 1 - \exp \left(\frac{-x}{2}\right) & x \geq 0
             \end{cases}
         \end{equation}
+\end{enumerate}
+
+\section{Triangular Distribution}
+
+\begin{enumerate}[label=\arabic{section}.\arabic*]
+    \item
+        Generate
+        \begin{equation}
+            T = U_1 + U_2
+        \end{equation}
+        \\
+        \textbf{Solution} Download the following C file.
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/gen_triangular.c
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+cc gen_triangular.c
+./a.out > tri.dat
+        \end{lstlisting}
+
+    \item
+        Find the CDF of $T$
+        \\
+        \textbf{Solution} Download the following files.
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/cdf_tri_num.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/tri.dat
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+python3 cdf_tri_num.py
+        \end{lstlisting}
+        It will generate the plot in Figure \eqref{fig:cdf_tri_num}.
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/cdf_tri_num.png}
+            \caption{Experimental CDF of V}
+            \label{fig:cdf_tri_num}
+        \end{figure}
+
+    \item
+        Find the PDF of $T$
+        \\
+        \textbf{Solution} Download the following files
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/pdf_tri_num.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/tri.dat
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+python3 pdf_tri_num.py
+        \end{lstlisting}
+        It will generate the plot in Figure \eqref{fig:pdf_tri_num}.
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/pdf_tri_num.png}
+            \caption{Experimental PDF of $X$}
+            \label{fig:pdf_tri_num}
+        \end{figure}
+
+    \item
+        Find the theoretical expressions for the CDF and PDF of $T$
+        \\
+        \textbf{Solution}
+        \begin{equation}
+            T = U_1 + U_2
+        \end{equation}
+        So we have
+        \begin{equation}
+            p_T(t) = (p_{U_1} * p_{U_2})(t)
+        \end{equation}
+        Since $U_1$ and $U_2$ are i.i.d., $p_{U_1}(t)=p_{U_2}(t)=p_U(t)$, which is given by eq \eqref{eq:pu}.
+        \begin{equation}
+            p_T(t) = \int_{-\infty}^{\infty}p_U(\tau)p_U(t - \tau) d\tau
+        \end{equation}
+        When $\tau<0$ or $\tau>1$, the integral evaluates to 0.
+        \begin{align}
+            p_T(t) &= \int_{0}^{1}p_U(\tau)p_U(t - \tau) d\tau \\
+                   &= \int_{0}^{1}p_U(t - \tau) d\tau
+        \end{align}
+        When $t<0$ or $t>2$, the integral evaluates to 0. When $0<t<1$,
+        \begin{align}
+            p_T(t) &= \int_{0}^{1}p_U(t - \tau) d\tau \\
+                   &= \int_{0}^{t} d\tau + \int_{t}^{1}0 \cdot d\tau \\
+                   &= t
+        \end{align}
+        When $1<t<2$,
+        \begin{align}
+            p_T(t) &= \int_{0}^{1}p_U(t - \tau) d\tau \\
+                   &= \int_{0}^{t-1}0 \cdot d\tau + \int_{t-1}^{1} d\tau \\
+                   &= 2 - t
+        \end{align}
+        Therefore the PDF is
+        \begin{equation}
+            p_T(t) = \begin{cases}
+                0 & t < 0 \\
+                t & 0 < t < 1 \\
+                2 - t & 1 < t < 2 \\
+                0 & t > 2
+            \end{cases}
+        \end{equation}
+        The CDF of $T$ is given by
+        \begin{equation}
+            F_T(t) = \int_{0}^{t}p_T(t)dt
+        \end{equation}
+        Simplifying, we get
+        \begin{equation}
+            F_T(t) = \begin{cases}
+                0 & t < 0 \\
+                \frac{t^2}{2} & 0 < t < 1 \\
+                -\frac{t^2}{2} + 2t - 1 & 1 < t < 2 \\
+                1 & t > 2
+            \end{cases}
+        \end{equation}
+
+    \item
+        Verify your results through a plot
+        \\
+        \textbf{Solution} Download the following files
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/pdf_tri.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/cdf_tri.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/tri.dat
+        \end{lstlisting}
+        And run them using
+        \begin{lstlisting}
+python3 pdf_tri.py
+python3 cdf_tri.py
+        \end{lstlisting}
+        They will generate the plots in Figures \eqref{fig:cdf_tri} and \eqref{fig:pdf_tri}.
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/cdf_tri.png}
+            \caption{CDF of $X$}
+            \label{fig:cdf_tri}
+        \end{figure}
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/pdf_tri.png}
+            \caption{PDF of $X$}
+            \label{fig:pdf_tri}
+        \end{figure}
+
 \end{enumerate}
 
 \end{document}
