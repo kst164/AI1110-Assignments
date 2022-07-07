@@ -471,4 +471,275 @@ python3 cdf_tri.py
 
 \end{enumerate}
 
+\section{Maximum Likelihood}
+
+\begin{enumerate}[label=\arabic{section}.\arabic*]
+    \item
+        Generate equiprobable $X \in \{1, -1\}$.
+        \\
+        \textbf{Solution} Download the following C file
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/gen_bernoulli.c
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+cc gen_bernoulli.c
+./a.out > ber.dat
+        \end{lstlisting}
+
+    \item
+        Generate
+        \begin{equation}
+            Y = AX + N
+        \end{equation}
+        where $A$ = 5 dB, and $ N \sim \mathcal{N}(0, 1)$.
+        \\
+        \textbf{Solution} Download the following files
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/gen_y.py
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+python gen_y.py
+        \end{lstlisting}
+        It will create the file \texttt{maxlike.dat} containing $Y$.
+
+    \item
+        Plot $Y$ using a scatter plot.
+        \\
+        \textbf{Solution} Download the following files
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/scatter_y.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/maxlike.dat
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+python scatter_y.py
+        \end{lstlisting}
+        It will generate the plot in Figure \eqref{fig:scatter_y}.
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/scatter_y.png}
+            \caption{Scatter plot of $Y$}
+            \label{fig:scatter_y}
+        \end{figure}
+
+    \item
+        Guess how to estimate $X$ from $Y$.
+        \\
+        \textbf{Solution} We can estimate $X$ using
+        \begin{equation}
+            \hat{X} = \begin{cases}
+                1 & Y \geq 0 \\
+                -1 & Y < 0
+            \end{cases}
+        \end{equation}
+
+    \item
+        Find
+        \begin{equation}
+            P_{e|0} = \pr{\hat{X} = -1 | X = 1}
+        \end{equation}
+        and
+        \begin{equation}
+            P_{e|1} = \pr{\hat{X} = 1 | X = 0}
+        \end{equation}
+        \\
+        \textbf{Solution} We have
+        \begin{align}
+            P_{e|0} &= \pr{\hat{X} = -1 | X = 1} \\
+            &= \pr{AX + N < 0 | X = 1} \\
+            &= \pr{A + N < 0} \\
+            &= \pr{N < -A} \\
+            &= F_N(-A) \\
+            &= Q(A)
+        \end{align}
+        and
+        \begin{align}
+            P_{e|1} &= \pr{\hat{X} = 1 | X = -1} \\
+            &= \pr{AX + N \geq 0 | X = -1} \\
+            &= \pr{-A + N \geq 0} \\
+            &= \pr{N \geq A} \\
+            &= Q(A)
+        \end{align}
+        So we have our result
+        \begin{equation}
+            P_{e|0} = P_{e|1} = Q(A)
+        \end{equation}
+
+    \item
+        Find $P_e$ assuming $X$ has equiprobable symbols
+        \\
+        \textbf{Solution} We need to find
+        \begin{align}
+        \begin{split}
+            P_e &= P_{e|0} \cdot \pr{X = -1} \\
+            &\quad+ P_{e|1} \cdot \pr{X = 1}
+        \end{split} \\
+            &= Q(A) \cdot \frac{1}{2} + Q(A) \cdot \frac{1}{2} \\
+            P_e &= Q(A)
+        \end{align}
+
+    \item
+        Verify by plotting the theoretical $P_e$ with respect to $A$ from 0 to 10 dB
+        \\
+        \textbf{Solution} Download the following files
+        \begin{lstlisting}
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/error_prob.py
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/ber.dat
+wget https://raw.githubusercontent.com/kst164/AI1110-Assignments/main/rand_nums/codes/gau.dat
+        \end{lstlisting}
+        And run it using
+        \begin{lstlisting}
+python scatter_y.py
+        \end{lstlisting}
+        It will generate the plot in Figure \eqref{fig:error_ml}.
+        \begin{figure}[!ht]
+            \includegraphics[width=\columnwidth]{figs/error_ml.png}
+            \caption{Scatter plot of $Y$}
+            \label{fig:error_ml}
+        \end{figure}
+
+    \item
+        Now, consider a threshold $\delta$ while estimating $X$ from $Y$. Find the value of $\delta$
+        that maximizes the theoretical $P_e$.
+        \\
+        \textbf{Solution} We can define our guess as
+        \begin{equation}
+            \hat{X} = \begin{cases}
+                1 & Y \geq \delta \\
+                -1 & Y < \delta
+            \end{cases}
+        \end{equation}
+        Now,
+        \begin{align}
+            P_{e|0} &= \pr{\hat{X} = -1 | X = 1} \\
+            &= \pr{AX + N < \delta | X = 1} \\
+            &= \pr{A + N < \delta} \\
+            &= \pr{N < -A + \delta} \\
+            &= F_N(-(A - \delta)) \\
+            &= Q(A - \delta)
+        \end{align}
+        And similarly,
+        \begin{equation}
+            P_{e|1} = Q(A + \delta)
+        \end{equation}
+        So we have,
+        \begin{align}
+        \begin{split}
+            P_e &= P_{e|0} \cdot \pr{X = -1} \\
+            &\quad+ P_{e|1} \cdot \pr{X = 1}
+        \end{split} \\
+            &= Q(A - \delta) \cdot \frac{1}{2} + Q(A + \delta) \cdot \frac{1}{2} \label{eq:p_e}
+        \end{align}
+        To find the minimal $P_e$, we differentiate Eq \eqref{eq:p_e} wrt $\delta$ and equate it to
+        0
+        \begin{align}
+            0 &= \frac{d}{d\delta}\left(\frac{1}{2}\left(Q(A-\delta) + Q(A+\delta)\right)\right) \\
+            &= \frac{1}{2} \frac{1}{\sqrt{2\pi}}
+                \left(e^{-\frac{(A-\delta)^2}{2}} - e^{-\frac{(A+\delta)^2}{2}}\right)
+        \end{align}
+        So we have
+        \begin{align}
+            (A - \delta)^2 &= (A + \delta)^2 \\
+            \implies \delta &= 0
+        \end{align}
+        So $P_e$ is minimal when the threshold is $\delta = 0$.
+
+    \item
+        Repeat the above exercise when
+        \begin{equation}
+            p_X(0) = p
+        \end{equation}
+        \\
+        \textbf{Solution} We have
+        \begin{align}
+            P_e &= P_{e|0} p + P_{e|1} (1 - p) \\
+            &= Q(A - \delta) p + Q(A + \delta) (1 - p)
+        \end{align}
+        Differentiating wrt $\delta$ to get minimum,
+        \begin{align}
+            0 &= \frac{d}{d\delta}(Q(A - \delta) p + Q(A + \delta) (1 - p)) \\
+            &= pe^{-\frac{(A - \delta)^2}{2}} - (1 - p) e^{-\frac{(A + \delta)^2}{2}}
+        \end{align}
+        Taking $\ln$,
+        \begin{align}
+            \ln{p} - \frac{(A - \delta)^2}{2} &= \ln(1 - p) - \frac{(A + \delta)^2}{2} \\
+            2 A \delta &= \ln \frac{1 - p}{p} \\
+            \delta &= \frac{1}{2 A} \ln \frac{1 - p}{p}
+        \end{align}
+        And so we have our result
+
+    \item
+        Repeat the above exercise using the MAP criterion.
+        \\
+        \textbf{Solution}
+        Assume $\pr{X = -1} = p$.
+
+        According to the MAP criterion, when
+        \begin{equation}
+            p_{X|Y}(-1|y) > p_{X|Y}(1|y) \label{eq:5.10:MAP}
+        \end{equation}
+        We should guess -1, else we guess 1. Now,
+        \begin{equation}
+            p_{X|Y}(x|y) = \frac{p_{Y|X}(y|x)p_X(x)}{p_Y(y)} \label{eq:5.10:x|y}
+        \end{equation}
+        %To find $p_Y(y)$
+        %\begin{align}
+        %\begin{split}
+            %p_{Y}(y) &= p_{Y|X}(y|-1)(p) \\
+            %&\quad+ p_{Y|X}(y|1)(1 - p)
+        %\end{split}
+        %\end{align}
+        Now,
+        \begin{equation}
+            p_{Y|X}(y|-1) = p_{(-A+N)}(y)
+        \end{equation}
+        Since $A$ is a constant,
+        \begin{align}
+            p_{Y|X}(y|-1) &= p_{N}(y + A) \\
+            &= \frac{1}{\sqrt{2 \pi}}e^{-\frac{(y + A)^2}{2}}
+        \end{align}
+        Substituting into \eqref{eq:5.10:x|y},
+        \begin{align}
+            p_{X|Y}(-1|y) &= \frac{p_{Y|X}(y|-1)p_X(-1)}{p_Y(y)} \\
+            p_{X|Y}(-1|y) &= \frac{\frac{1}{\sqrt{2 \pi}} e^{-\frac{(y+A)^2}{2}} p}{p_Y(y)}
+                \label{eq:5.10:-1|y}
+        \end{align}
+        Similarly,
+        \begin{align}
+            p_{X|Y}(1|y) &= \frac{\frac{1}{\sqrt{2 \pi}} e^{-\frac{(y-A)^2}{2}} (1-p)}{p_Y(y)}
+                \label{eq:5.10:1|y}
+        \end{align}
+        Finally, substituting Eqs \eqref{eq:5.10:-1|y} and \eqref{eq:5.10:1|y} into Eq
+        \eqref{eq:5.10:MAP}, we should guess that $X = -1$ when
+        \begin{align}
+            \frac{\frac{1}{\sqrt{2 \pi}} e^{-\frac{(y+A)^2}{2}} p}{p_Y(y)}
+                &> \frac{\frac{1}{\sqrt{2 \pi}} e^{-\frac{(y-A)^2}{2}} (1-p)}{p_Y(y)} \\
+            \frac{p}{1-p} &> e^{2 A y} \\
+            y &< \frac{1}{2A} \ln \frac{p}{1-p}
+        \end{align}
+        And so we have our guess,
+        \begin{equation}
+            \hat{X} = \begin{cases}
+                -1 & y < \delta \\
+                1 & \text{otherwise}
+            \end{cases}
+        \end{equation}
+        where $\delta = \frac{1}{2A} \ln \frac{p}{1-p}$.
+
+        Consider the special case $p=\frac{1}{2}$
+        \begin{align}
+            \delta &= \frac{1}{2 A} \ln 1 \\
+            \delta &= 0
+        \end{align}
+        So our guess is,
+        \begin{equation}
+            \hat{X} = \begin{cases}
+                -1 & y < 0 \\
+                1 & y > 0
+            \end{cases}
+        \end{equation}
+
+\end{enumerate}
+
 \end{document}
