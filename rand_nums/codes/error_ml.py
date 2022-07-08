@@ -15,8 +15,7 @@ def get_error_prob(y_arr):
     wrong_count = np.sum(guesses != X_arr)
     return wrong_count / guesses.shape[0]
 
-A_vals = np.arange(0, 1.1, 0.1)
-print(A_vals)
+A_vals = np.arange(0, 4.1, 0.2)
 error_probs = []
 
 for A in A_vals:
@@ -26,12 +25,12 @@ for A in A_vals:
 def Q(A):
     return erfc(A / np.sqrt(2)) / 2
 
-A_range = np.linspace(0, 3)
+A_range = np.linspace(0, 10)
 # A_range = A_vals
 theoretical = Q(A_range)
 
-plt.plot(A_vals, error_probs, 'o', label='Experimental')
-plt.plot(A_range, theoretical, '-', label='Theoretical')
+plt.semilogy(A_vals, error_probs, 'o', label='Experimental')
+plt.semilogy(A_range, theoretical, '-', label='Theoretical')
 plt.legend()
 plt.grid()
 plt.xlabel(r"$A$")

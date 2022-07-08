@@ -4,10 +4,7 @@ import matplotlib.pyplot as plt
 
 NUM_INTERVALS = 100
 
-gau_arr = np.loadtxt("gau.dat", dtype="double")
-x1_arr, x2_arr = np.array_split(gau_arr, 2)
-
-chi_arr = (x1_arr ** 2) + (x2_arr ** 2)
+chi_sq_arr = np.loadtxt("chi_sq.dat", dtype="double")
 
 buckets = np.linspace(-2, 8, num=NUM_INTERVALS)
 freqs = []
@@ -24,7 +21,7 @@ theoretical = vf(buckets)
 # theoretical = (scipy.special.erf(buckets / np.sqrt(2)) + 1) / 2
 
 for i in range(NUM_INTERVALS):
-    freqs.append(np.sum(chi_arr < buckets[i]) / len(chi_arr))
+    freqs.append(np.sum(chi_sq_arr < buckets[i]) / len(chi_sq_arr))
 
 plt.plot(buckets, freqs, 'o', label='Experimental')
 plt.plot(buckets, theoretical, '-', label='Theoretical')
